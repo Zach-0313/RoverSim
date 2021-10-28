@@ -18,7 +18,7 @@ MonoBehaviour:
   ExcavationSizeX: 15
   ExcavatoreSizeY: 25
   ExcavationSpeed: 2
-  ExcavationThreshold: 0.9
+  ExcavationThreshold: 0.7
   RoverForwardSpeed: 8.47
   RoverTurnSpeed: 1
   RoverTurnThreshold: 0.1
