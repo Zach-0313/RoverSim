@@ -1,11 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
-using UnityEngine.Events;
+using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 using UnityEngine.UI;
-using UnityEditor;
 
 public class RoverSystems : MonoBehaviour
 {
@@ -13,6 +11,8 @@ public class RoverSystems : MonoBehaviour
     [SerializeField] private float Depth;
     [SerializeField] private float Angle;
 
+    public enum ControlMode { Manual, Auto }
+    public ControlMode ControlScheme;
     public TextMeshProUGUI DepthDisplay;
     public TextMeshProUGUI AngleDisplay;
     public float ExcavatorSpeed;
@@ -25,6 +25,7 @@ public class RoverSystems : MonoBehaviour
     public float MovingExcavationDepth;
     public float StationaryExcavationDepth;
     public RoverProfileSO RoverProfileSO;
+    Vector3 Destination;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +36,7 @@ public class RoverSystems : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+
         ExcavatorSpeed = RoverProfileSO.UpDownExcavatorSpeed;
         MovingExcavationDepth = RoverProfileSO.ExcavatorTrenchDepth;
         StationaryExcavationDepth = RoverProfileSO.ExcacatorBuryDepth;
@@ -52,12 +54,12 @@ public class RoverSystems : MonoBehaviour
 
         if (animator.GetBool("DrumToggleLock") == false) return;
 
-        if(!agent.hasPath && (animator.GetFloat("ExcavateInput") <= RoverProfileSO.ExcavationThreshold) && Lower)
+        if (!agent.hasPath && (animator.GetFloat("ExcavateInput") <= RoverProfileSO.ExcavationThreshold) && Lower)
         {
 
             RaycastFrom.GetComponent<Excavator>().ExcavationMaxDepth = StationaryExcavationDepth;
             RaycastFrom.GetComponent<Excavator>().Excavate();
-        } 
+        }
         else
         {
             RaycastFrom.GetComponent<Excavator>().ExcavationMaxDepth = MovingExcavationDepth;
@@ -66,7 +68,6 @@ public class RoverSystems : MonoBehaviour
         {
             RaycastFrom.GetComponent<Excavator>().Excavate();
         }
-
     }
     public void SetDrums()
     {
@@ -121,7 +122,7 @@ public class RoverSystems : MonoBehaviour
         if (Physics.Raycast(DrillRay, out DrillResult, 1000f))
         {
             Depth = DrillResult.distance;
-            
+
             Angle = Quaternion.FromToRotation(-RaycastFrom.up, DrillResult.normal).z;
             Angle *= Mathf.Rad2Deg;
         }
@@ -130,13 +131,13 @@ public class RoverSystems : MonoBehaviour
     {
         Digging = value;
     }
-    public float ExcavatorPosition() 
+    public float ExcavatorPosition()
     {
         return animator.GetFloat("ExcavateInput");
     }
-    public void ActivateParticles() 
-    { 
-        foreach(ParticleSystem a in DigParticles)
+    public void ActivateParticles()
+    {
+        foreach (ParticleSystem a in DigParticles)
         {
             a.gameObject.SetActive(true);
             a.Play();
@@ -147,8 +148,8 @@ public class RoverSystems : MonoBehaviour
         Debug.Log("Trying to Dig");
         Ray ray = new Ray(RaycastFrom.position, Vector3.down);
         Debug.DrawRay(ray.origin, ray.direction);
-        if(Physics.Raycast(ray, out RaycastHit hit, 15f))
-        {   
+        if (Physics.Raycast(ray, out RaycastHit hit, 15f))
+        {
             if (hit.collider.GetComponent<Terrain>())
             {
                 RaycastFrom.GetComponent<Excavator>().Excavate();
@@ -158,5 +159,9 @@ public class RoverSystems : MonoBehaviour
                 animator.SetFloat("ExcavateInput", newValue);
             }
         }
+    }
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(Destination, 1);
     }
 }

@@ -42,16 +42,20 @@ public class RoverAgentMovement : MonoBehaviour
             {
                 agent.ResetPath();
                 destination = hit.point;
-                agent.SetDestination(destination);
-                agent.updatePosition = false;
-                ActivelyTurning = true;
+                //agent.SetDestination(destination);
+                agent.updatePosition = true;
                 DestinationSet = false;
             }
         }
-        targetDir = agent.destination - transform.position;
+        targetDir = destination - transform.position;
         targetDir = targetDir.normalized;
         whichWay = Vector3.Cross(transform.forward, targetDir.normalized).y;
 
+        if (agent.nextPosition != null)
+        {
+            if (Mathf.Abs(whichWay) > TurnThreshold) ActivelyTurning = true;
+            else ActivelyTurning = false;
+        }
         if (agent.isStopped)
         {
             Debug.Log("Agent has Stopped");
@@ -64,7 +68,7 @@ public class RoverAgentMovement : MonoBehaviour
         }
         if (!DestinationSet && !ActivelyTurning)
         {
-            MoveToPoint(destination);
+            //MoveToPoint(destination);
         }
         //conform Rover to surface normals
     }
@@ -79,10 +83,7 @@ public class RoverAgentMovement : MonoBehaviour
     }
     void LateUpdate()
     {
-        if (agent.nextPosition != null)
-        {
-            if (Mathf.Abs(whichWay) <= TurnThreshold) ActivelyTurning = false;
-        }
+        
         animator.SetFloat("DriveInput", agent.velocity.magnitude / agent.speed);
         animator.SetFloat("DriveTurning", whichWay);
     }
@@ -99,6 +100,8 @@ public class RoverAgentMovement : MonoBehaviour
 
         } while (Mathf.Abs(whichWay) > TurnThreshold);
         Debug.Log("Done Rotating");
+        ActivelyTurning = false;
+        MoveToPoint(destination);
     }
     private bool isOverUI()
     {

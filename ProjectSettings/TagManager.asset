@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - UI
+  - Rover-Detailed View
+  - Rover-Standard View
   layers:
   - Default
   - TransparentFX
@@ -17,7 +19,7 @@ TagManager:
   - PostProcessing
   - Not in Reflection
   - Mask
-  - 
+  - Terrain
   - 
   - 
   - 
