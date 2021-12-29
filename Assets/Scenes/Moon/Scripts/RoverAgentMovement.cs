@@ -62,7 +62,7 @@ public class RoverAgentMovement : MonoBehaviour
             animator.SetFloat("DriveTurning", 0);
             animator.SetFloat("DriveInput", 0);
         }
-        if (!DestinationSet && ActivelyTurning)
+        if (!DestinationSet && ActivelyTurning && !isOverUI())
         {
             StartCoroutine(DoRotationAtTargetDirection(destination));
         }

@@ -10,16 +10,16 @@ public class DualCameraSystem : MonoBehaviour
 
     public void MouseDown()
     {
-        Camera1.gameObject.SetActive(false);
-        Camera2.transform.position = Camera1.transform.position;
-        Camera2.transform.gameObject.SetActive(true);
     }
     void Update()
     {
         if (Input.GetMouseButton(1))
         {
-            Camera1.gameObject.SetActive(false);
             Camera2.transform.gameObject.SetActive(true);
+            Camera2.transform.position = Camera1.transform.position;
+            Camera1.gameObject.SetActive(false);
+            //Camera1.gameObject.SetActive(false);
+            //Camera2.transform.gameObject.SetActive(true);
         }
         else
         {

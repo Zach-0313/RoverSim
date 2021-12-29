@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/RoverProfile", order = 1)]
 public class RoverProfileSO : ScriptableObject

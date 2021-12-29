@@ -20,7 +20,7 @@ MonoBehaviour:
   ExcavationSpeed: 2
   ExcavationThreshold: 0.7
   RoverForwardSpeed: 8.47
-  RoverTurnSpeed: 1
+  RoverTurnSpeed: 5
   RoverTurnThreshold: 0.1
   WheelTurnSpeed: 0.25
   DrumTurnSpeed: 1
