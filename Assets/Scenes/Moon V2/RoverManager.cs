@@ -6,9 +6,12 @@ using UnityEngine.EventSystems;
 public class RoverManager : MonoBehaviour
 {
     public event EventHandler<OnControlSchemeChangedEventArgs> OnControlSchemeChanged;
-    public class OnControlSchemeChangedEventArgs : EventArgs { public ControlMode newControlMode; }
-    public event EventHandler OnRotateExcavators;
+    public event EventHandler<OnArmModeChangedEventArgs> OnArmModeUpdated;
 
+    public class OnControlSchemeChangedEventArgs : EventArgs { public ControlMode newControlMode; }
+    public class OnArmModeChangedEventArgs : EventArgs { public bool isActive; }
+
+    public event EventHandler OnRotateExcavators;
 
     public enum ControlMode { Manual, Auto }
     ControlMode ControlScheme { get; set; }
@@ -16,10 +19,19 @@ public class RoverManager : MonoBehaviour
     [SerializeField] RoverProfileSO roverProfile;
 
     NavMeshAgent agent;
+    public bool ArmModeEnabled;
+    public void ToggleArmMode()
+    {
+        if (ArmModeEnabled) ArmModeEnabled = false;
+        else ArmModeEnabled = true;
+
+        OnArmModeUpdated?.Invoke(this, new OnArmModeChangedEventArgs{isActive = ArmModeEnabled});
+    }
     // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        SetControlScheme(1);
     }
     public void SetControlScheme(int newMode)
     {

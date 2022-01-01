@@ -19,10 +19,12 @@ public class UIInteraction : MonoBehaviour
     public bool ClickEffect;
     public bool ScaleParent;
     public bool ChildScaler;
+    public bool RepeatWhileHeld;
     UIInteraction parentUI;
     // Start is called before the first frame update
     void Start()
     {
+        DOTween.defaultRecyclable = true;
         NormalScale = transform.localScale;
         MouseOverScale = NormalScale * (1 + MouseOverScaleChange);
         ClickedScale = NormalScale * (1 + ClickScaleChange);
@@ -57,14 +59,11 @@ public class UIInteraction : MonoBehaviour
     {
         if (!ClickEffect) return;
         transform.DOScale(ClickedScale, Timeframe);
-        //Sequence ClickedTween = DOTween.Sequence();
-        //ClickedTween.Append(transform.DOScale(ClickedScale, Timeframe))
-        //  .PrependInterval(Timeframe)
-        //  .Append(transform.DOScale(MouseOverScale, Timeframe));
+        MouseDown?.Invoke();
     }
     void OnMouseDrag()
     {
-        MouseDown?.Invoke();
+        if (RepeatWhileHeld) MouseDown?.Invoke();
     }
     void OnMouseUp()
     {
