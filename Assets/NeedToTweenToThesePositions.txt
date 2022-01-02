@@ -1,0 +1,31 @@
+Part 1: Pivot
+Start = Vector3(5.78966319e-06,90,180)
+Finish = 
+
+Part 2:
+Start = Vector3(270,270,0)
+Finish = Vector3(323.536987,0,270)
+
+Part 3:
+Start = Vector3(0,90,90)
+Finish = Vector3(0,23.7210026,90)
+
+Part 4:
+Start = Vector3(270,270,0)
+Finish = Vector3(321.786987,180,90)
+
+Part 5:
+Start = Vector3(0,90,90)
+Finish = Vector3(0,228.347992,90)
+
+Part 6:
+Start = Vector3(270,270,0)
+Finish = Vector3(290.350983,0,270)
+
+Part 7:
+Start = Vector3(0,90,90)
+Finish = Vector3(0,0.266000032,90)
+
+Part 8:
+Start = Vector3(270.187683,190.077698,79.9555283)
+Finish = Vector3(275.216919,180.396042,89.6359711)

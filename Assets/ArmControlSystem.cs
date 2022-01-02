@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -12,6 +13,9 @@ public class ArmControlSystem : MonoBehaviour
     public float YOffset;
     public bool ArmModeEnabled;
     public Transform EndOfArm;
+    public Transform ArmRotateAtBase;
+    public Animator ArmAnimator;
+    public float toArm;
     void OnEnable()
     {
         RoverManager roverManager = GetComponent<RoverManager>();
@@ -26,6 +30,11 @@ public class ArmControlSystem : MonoBehaviour
     {
         ArmModeEnabled = eventArgs.isActive;
         Debug.Log($"Arm Control active = {ArmModeEnabled}");
+    }
+    void Update()
+    {
+        toArm = Mathf.Abs(Vector3.Distance(EndOfArm.position, transform.position));
+
     }
     public void OnMouseClick()
     {
@@ -43,6 +52,13 @@ public class ArmControlSystem : MonoBehaviour
         //AngleToPoint = AngleToTargetPoint(EndOfArm.position.x, EndOfArm.position.z, TargetPosition.x, TargetPosition.z);
         AngleToTarget = AngleFromArmToTarget();
         distanceFromArmToTarget = DistanceFromArmToTarget();
+        Vector3 rotation = ArmRotateAtBase.transform.rotation.eulerAngles;
+        rotation.y += AngleToTarget;
+        ArmRotateAtBase.DORotate(rotation, (Mathf.Abs(AngleToDirection(transform.position - TargetPosition)) / 360) * 20, RotateMode.Fast);
+    }
+    float AngleToDirection(Vector3 target)
+    {
+        return Vector3.SignedAngle(transform.forward, target.normalized, Vector3.up);
     }
     float DistanceFromArmToTarget()
     {
