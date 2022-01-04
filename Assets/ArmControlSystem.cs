@@ -16,6 +16,7 @@ public class ArmControlSystem : MonoBehaviour
     public Transform ArmRotateAtBase;
     public Animator ArmAnimator;
     public float toArm;
+    public Transform ArmTarget;
     void OnEnable()
     {
         RoverManager roverManager = GetComponent<RoverManager>();
@@ -48,13 +49,15 @@ public class ArmControlSystem : MonoBehaviour
         Ray MouseToWorld = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         Physics.Raycast(MouseToWorld, out RaycastHit hit);
         TargetPosition = hit.point;
+        ArmTarget.transform.position = TargetPosition;
         //RadiusToPoint = RadiusToTarget();
         //AngleToPoint = AngleToTargetPoint(EndOfArm.position.x, EndOfArm.position.z, TargetPosition.x, TargetPosition.z);
         AngleToTarget = AngleFromArmToTarget();
         distanceFromArmToTarget = DistanceFromArmToTarget();
         Vector3 rotation = ArmRotateAtBase.transform.rotation.eulerAngles;
         rotation.y += AngleToTarget;
-        ArmRotateAtBase.DORotate(rotation, (Mathf.Abs(AngleToDirection(transform.position - TargetPosition)) / 360) * 20, RotateMode.Fast);
+        ArmRotateAtBase.rotation = Quaternion.Euler(rotation);
+        //ArmTarget.transform.forward = ArmRotateAtBase.transform.forward;
     }
     float AngleToDirection(Vector3 target)
     {
@@ -69,7 +72,7 @@ public class ArmControlSystem : MonoBehaviour
     float AngleFromArmToTarget()
     {
         Vector3 targetPosition = TargetPosition;
-        return Vector3.SignedAngle((transform.position - EndOfArm.position).normalized, (transform.position - targetPosition).normalized, Vector3.up);
+        return Vector3.Angle((EndOfArm.position-transform.position).normalized, (targetPosition - transform.position).normalized);
     }
     private bool isOverUI()
     {

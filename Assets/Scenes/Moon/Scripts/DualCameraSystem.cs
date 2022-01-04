@@ -15,7 +15,9 @@ public class DualCameraSystem : MonoBehaviour
     {
         ArmModeCam.gameObject.SetActive(false);
         CurrentActiveCam = Camera2;
-        Camera1.m_Orbits = Camera2.m_Orbits;
+        Camera1.m_Orbits = Camera2.m_Orbits; 
+        ArmModeCam.m_Orbits = Camera2.m_Orbits;
+
     }
     void OnEnable()
     {

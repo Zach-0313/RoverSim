@@ -14,11 +14,17 @@ public class FadeInOutUI : MonoBehaviour
     {
         if (value.Get<float>() == 1)
         {
+            uiGroup.transform.GetChild(0).gameObject.SetActive(true);
+            uiGroup.enabled = true;
             uiGroup.DOFade(1, UIFadeTime);
+            uiGroup.blocksRaycasts = true;
+
         }
-        if (value.Get<float>() == 0f)
+        else
         {
             uiGroup.DOFade(0, UIFadeTime);
+            uiGroup.transform.GetChild(0).gameObject.SetActive(false);
+            uiGroup.blocksRaycasts = false;
         }
     }
 }

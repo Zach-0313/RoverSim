@@ -20,10 +20,11 @@ public class RoverManager : MonoBehaviour
 
     NavMeshAgent agent;
     public bool ArmModeEnabled;
-    public void ToggleArmMode()
+    public void ToggleArmMode(bool value)
     {
-        if (ArmModeEnabled) ArmModeEnabled = false;
-        else ArmModeEnabled = true;
+        ArmModeEnabled = value;
+        if (value == true) agent.isStopped = true;
+        else agent.isStopped = false;
 
         OnArmModeUpdated?.Invoke(this, new OnArmModeChangedEventArgs{isActive = ArmModeEnabled});
     }
